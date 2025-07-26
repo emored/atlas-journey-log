@@ -52,6 +52,19 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				// Travel Theme Colors
+				ocean: 'hsl(var(--ocean))',
+				'ocean-light': 'hsl(var(--ocean-light))',
+				earth: 'hsl(var(--earth))',
+				adventure: 'hsl(var(--adventure))',
+				sunset: 'hsl(var(--sunset))',
+				// Transport Mode Colors
+				'transport-car': 'hsl(var(--transport-car))',
+				'transport-walk': 'hsl(var(--transport-walk))',
+				'transport-bike': 'hsl(var(--transport-bike))',
+				'transport-bus': 'hsl(var(--transport-bus))',
+				'transport-train': 'hsl(var(--transport-train))',
+				'transport-plane': 'hsl(var(--transport-plane))',
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
@@ -67,6 +80,19 @@ export default {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
+			},
+			backgroundImage: {
+				'gradient-ocean': 'var(--gradient-ocean)',
+				'gradient-earth': 'var(--gradient-earth)',
+				'gradient-adventure': 'var(--gradient-adventure)',
+			},
+			boxShadow: {
+				'travel': 'var(--shadow-travel)',
+				'glow': 'var(--shadow-glow)',
+			},
+			transitionTimingFunction: {
+				'smooth': 'var(--transition-smooth)',
+				'bounce': 'var(--transition-bounce)',
 			},
 			keyframes: {
 				'accordion-down': {
