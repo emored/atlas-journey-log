@@ -33,8 +33,8 @@ const MapPanel: React.FC<MapPanelProps> = ({
   const [previewSource, setPreviewSource] = useState<string | null>(null);
   const [needsMapboxToken, setNeedsMapboxToken] = useState(true);
   const [mapboxToken, setMapboxToken] = useState(() => {
-    // Try to get stored token first
-    return localStorage.getItem('mapbox-token') || '';
+    // Try to get stored token first, or use default token
+    return localStorage.getItem('mapbox-token') || 'pk.eyJ1IjoiZW1vcnJyIiwiYSI6ImNtZGpxZW81aTBwNDYybnEzZTk2ZmFtZjMifQ.5UWJmhSeaAw5_5bszs5KnA';
   });
 
   useEffect(() => {
