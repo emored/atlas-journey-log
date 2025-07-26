@@ -31,11 +31,11 @@ const MapPanel: React.FC<MapPanelProps> = ({
   const [startMarker, setStartMarker] = useState<mapboxgl.Marker | null>(null);
   const [endMarker, setEndMarker] = useState<mapboxgl.Marker | null>(null);
   const [previewSource, setPreviewSource] = useState<string | null>(null);
-  const [needsMapboxToken, setNeedsMapboxToken] = useState(true);
   const [mapboxToken, setMapboxToken] = useState(() => {
     // Try to get stored token first, or use default token
     return localStorage.getItem('mapbox-token') || 'pk.eyJ1IjoiZW1vcnJyIiwiYSI6ImNtZGpxZW81aTBwNDYybnEzZTk2ZmFtZjMifQ.5UWJmhSeaAw5_5bszs5KnA';
   });
+  const [needsMapboxToken, setNeedsMapboxToken] = useState(!mapboxToken.trim());
 
   useEffect(() => {
     if (!mapContainer.current) return;
