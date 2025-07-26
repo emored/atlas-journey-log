@@ -31,16 +31,25 @@ const MapPanel: React.FC<MapPanelProps> = ({
   const [startMarker, setStartMarker] = useState<mapboxgl.Marker | null>(null);
   const [endMarker, setEndMarker] = useState<mapboxgl.Marker | null>(null);
   const [previewSource, setPreviewSource] = useState<string | null>(null);
-  const [needsMapboxToken, setNeedsMapboxToken] = useState(false);
-  const [mapboxToken, setMapboxToken] = useState('');
+  const [needsMapboxToken, setNeedsMapboxToken] = useState(true);
+  const [mapboxToken, setMapboxToken] = useState(() => {
+    // Try to get stored token first
+    return localStorage.getItem('mapbox-token') || '';
+  });
 
   useEffect(() => {
     if (!mapContainer.current) return;
 
-    // Check if we have a mapbox token
-    const token = 'pk.eyJ1IjoiYXRsYXMtdHJhdmVsIiwiYSI6ImNscXZoNzh3czB0eHEycW54OTNvaTh5aXMifQ.demo-token';
+    // Check if we have a valid mapbox token
+    const token = mapboxToken.trim();
     
+    if (!token) {
+      setNeedsMapboxToken(true);
+      return;
+    }
+
     try {
+      console.log('Initializing Mapbox with token...');
       mapboxgl.accessToken = token;
       
       map.current = new mapboxgl.Map({
@@ -57,6 +66,8 @@ const MapPanel: React.FC<MapPanelProps> = ({
       map.current.on('click', (e) => {
         const coords: [number, number] = [e.lngLat.lng, e.lngLat.lat];
         
+        console.log('Map clicked:', coords, 'Click count:', clickCount);
+        
         if (clickCount === 0) {
           // First click - set start marker
           if (startMarker) startMarker.remove();
@@ -71,8 +82,10 @@ const MapPanel: React.FC<MapPanelProps> = ({
             .addTo(map.current!);
           setStartMarker(marker);
           setClickCount(1);
+          console.log('Start marker placed, click count now:', 1);
         } else if (clickCount === 1) {
           // Second click - set end marker and create route
+          console.log('Setting end marker');
           const marker = new mapboxgl.Marker({ color: '#ef4444' })
             .setLngLat(coords)
             .addTo(map.current!);
@@ -84,6 +97,7 @@ const MapPanel: React.FC<MapPanelProps> = ({
             onRouteSelect([startCoords.lng, startCoords.lat], coords);
             drawPreviewRoute([startCoords.lng, startCoords.lat], coords);
           }
+          console.log('End marker placed, click count reset to:', 0);
         }
       });
 
@@ -248,12 +262,14 @@ const MapPanel: React.FC<MapPanelProps> = ({
             />
             <button
               onClick={() => {
-                if (mapboxToken) {
+                if (mapboxToken.trim()) {
                   setNeedsMapboxToken(false);
-                  window.location.reload();
+                  // Store token for reuse
+                  localStorage.setItem('mapbox-token', mapboxToken);
                 }
               }}
               className="w-full bg-primary text-primary-foreground px-4 py-2 rounded-md hover:bg-primary/90"
+              disabled={!mapboxToken.trim()}
             >
               Connect Map
             </button>
